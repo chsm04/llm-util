@@ -3,9 +3,10 @@ import torch
 
 from transformers import AutoTokenizer
 import json
+from env.environment import Environment as env
 
 
-class Model:
+class LLaMa:
 
     pipeline = None
 
@@ -16,11 +17,10 @@ class Model:
         return;
 
     def load(self):
-        # model_id = "MLP-KTLim/llama-3-Korean-Bllossom-8B"
-        # model_id = "meta-llama/Meta-Llama-3-8B-Instruct"
-        model_id = "maywell/Llama-3-Ko-8B-Instruct"
-        # model_id = "saltlux/Ko-Llama3-Luxia-8B"
-        
+        """
+        라마 파이프 라인 생성
+        """
+        model_id = env.get_llama3_model_id()
         tokenizer = AutoTokenizer.from_pretrained(model_id)
 
         self.pipeline = transformers.pipeline(
@@ -28,14 +28,22 @@ class Model:
             tokenizer=tokenizer,
             model=model_id,
             model_kwargs={"torch_dtype": torch.bfloat16},
-            device="mps",
+            device="cuda:1",
         )
 
+    def get_message_template(self, user_input):
+        PROMPT = '''당신은 유용한 AI 어시스턴트입니다. 사용자의 질의에 대해 친절하고 한국어로 정확하게 답변해야 합니다.'''
+        messages = [
+            {"role": "system", "content": PROMPT},
+            {"role": "user", "content": user_input},
+        ]
+
+        return messages
 
 
     def chat(self, messages):
         prompt = self.pipeline.tokenizer.apply_chat_template(
-        messages, 
+        self.get_message_template(messages), 
         tokenize=False, 
         add_generation_prompt=True
         )
@@ -47,7 +55,7 @@ class Model:
 
         outputs = self.pipeline(
             prompt,
-            max_new_tokens=256,
+            max_new_tokens=500,
             eos_token_id=terminators,
             do_sample=True,
             temperature=0.6,
