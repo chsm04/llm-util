@@ -57,26 +57,6 @@ class Log:
         else:
             self.app.logger.info(text)
 
-    def write_start_ascii_art(self):
-        """
-        MINA, server on 아스키 아트를 로그에 남깁니다.
-
-        """
-        self.ASCII_MINA()
-        self.ASCII_SERVER_ON()
-
-    def ASCII_MINA(self):
-        """
-        MINA 아스키 아트를 로그에 남깁니다.
-        """
-        self.write_log('             ______      __  __      ______      ')
-        self.write_log(" /'\_/`\    /\__  _\    /\ \/\ \    /\  _  \     ")
-        self.write_log('/\      \   \/_/\ \/    \ \ `\\\\ \   \ \ \L\ \    ')
-        self.write_log('\ \ \__\ \     \ \ \     \ \ , ` \   \ \  __ \   ')
-        self.write_log(' \ \ \_/\ \     \_\ \__   \ \ \`\ \   \ \ \/\ \  ')
-        self.write_log('  \ \_\\\\ \_\    /\_____\   \ \_\ \_\   \ \_\ \_\ ')
-        self.write_log('   \/_/ \/_/    \/_____/    \/_/\/_/    \/_/\/_/ ')
-
     def ASCII_SERVER_ON(self):
         """
         Server ON 아스키 아트를 로그에 남깁니다.
