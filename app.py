@@ -13,6 +13,6 @@ app.register_blueprint(llama_controller.bp)
 
 
 if __name__ == "__main__":
-    log.write_start_ascii_art()
+    log.ASCII_SERVER_ON()
     log.write_log(f"Address=http://{env.get_host_addr()}:{env.get_port_num()}")
     app.run(host=env.get_host_addr(), port=int(env.get_port_num()), debug=True,  use_reloader=False)
